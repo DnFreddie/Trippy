@@ -1,51 +1,47 @@
 <script lang="ts">
 	export let description: string;
+    import CustomMap from "./customMap.svelte";
+	import ChalangeForm from "./chalangeForm.svelte";
+    import  type { LngLatLike } from "svelte-maplibre";
 
-	let uploadedImage: string;
 
-	function handleImageUpload(e: Event) {
-		const image = (e.target as HTMLInputElement)?.files?.[0];
-		if (!image) return;
-		uploadedImage = URL.createObjectURL(image);
-	}
+export let currPossiton:LngLatLike
+
+    function toggleMap() {
+        showMap = !showMap
+    }
+
+let showMap = false
+
 </script>
 
 <div class="px-4 py-8 bg-blue-50 rounded-lg shadow-md">
-	<form method="post" enctype="multipart/form-data">
-		<input
-			type="text"
-			name="user_desc"
-			class="hidden mb-4 border border-gray-300 rounded-md py-2 px-3 bg-white"
-			bind:value={description}
-		/>
+    {#if showMap}
+<div>
+            <div class="flex justify-end">
+<button 
+    on:mouseover={toggleMap} 
+    on:mouseout={toggleMap} 
+    on:focus={toggleMap} 
+    on:blur={toggleMap}
+  >
+    <img src="/map_Icon.jpg" alt="map icon">
+  </button>
 
-		<p>Test desc{description}</p>
-        <!--  Upload photo section -->
-		<h2 class="text-3xl font-semibold font-vfont mb-6">Place for the Photo</h2>
-		{#if uploadedImage}
-			<div class="mt-4">
-				<img src={uploadedImage} class="max-w-50ch" alt="" />
-			</div>
+            </div>
+<CustomMap currPossiton={currPossiton}/>
+        </div>
 
-		{/if}
-		<input
-			type="file"
-			name="file"
-			accept="image/*"
-			class="block mb-4 border border-gray-300 rounded-md py-2 px-3 bg-white"
-			on:change={handleImageUpload}
-		/>
+    {:else}
 
-
-		<div class="mt-6">
-			<button
-				class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50"
-				type="submit"
-				formaction="?/addRef"
-				disabled={!uploadedImage ?? null}
-			>
-				Upload Image
-			</button>
-		</div>
-	</form>
+    <div class="justify-end flex items-end mb-4"><button 
+    on:mouseover={toggleMap} 
+    on:mouseout={toggleMap} 
+    on:focus={toggleMap} 
+    on:blur={toggleMap}>
+    <img src="/map_Icon.jpg" alt="map icon">
+  </button>
+    </div>
+        <ChalangeForm description={description}/>
+    {/if}
 </div>
