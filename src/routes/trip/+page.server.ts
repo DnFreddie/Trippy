@@ -5,6 +5,8 @@ export const actions = {
 		const formData = await request.formData();
 		const albumImage = formData.get('file')?.valueOf() as File;
 		const userDesctription = formData.get('user_desc');
+        console.log(albumImage)
+        console.log(userDesctription)
 	},
 
 
@@ -30,10 +32,11 @@ export async function load({ params }) {
         })
     }
 
-
+//TODO!  make it so it returens smth ecen if undefined 
 
 	return {
 		 chalange_list:ch,
+
 	};
 }
 

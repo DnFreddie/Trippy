@@ -7,13 +7,13 @@
   //let boundPos
       //[-122.2993, 47.4464]; // Initial position
 export let currPossiton:LngLatLike
-  console.log(currPossiton)
 
   function updateCurrPosition(event) {
     currPossiton = event.detail.lngLat;
-      console.log(currPossiton)
   }
 </script>
+
+<div>
 
 <MapLibre
   style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
@@ -40,8 +40,8 @@ export let currPossiton:LngLatLike
  </MapLibre>
 
 
-<form method="POST"  action="?/upPosition">
+<form method="POST"  action="?/upPosition" class="hidden">
   <input type="hidden" name="latitude" bind:value={currPossiton} />
-  <button type="submit" formaction="?/upPosition">Update Server Position</button>
 </form>
 
+</div>
