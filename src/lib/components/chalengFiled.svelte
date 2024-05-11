@@ -3,15 +3,11 @@
     import CustomMap from "./customMap.svelte";
 	import ChalangeForm from "./chalangeForm.svelte";
     import  type { LngLatLike } from "svelte-maplibre";
-    import { storeFE } from "$lib/stores/store";
-    export let objAttributes = {};
+    export let object
+    export let removeComponent
 
 
-function removeComponent() {
-		$storeFE = $storeFE.filter(function(value, index, arr){ 
-			if (value.id != objAttributes.id) return value;
-		});
-	}
+
 
 export let currPossiton:LngLatLike
 
@@ -26,9 +22,9 @@ let showMap = false
 
 </script>
 
-<div class="   px-4 py-8 bg-blue-50 rounded-lg shadow-md"id={objAttributes.id}>
-    	<button on:click={removeComponent}>x</button>
+<div class="   px-4 py-8 bg-blue-50 rounded-lg shadow-md" id="{object}">
 
+<button on:click={removeComponent(object)}>x</button>
 <div>
             <div class="flex justify-end ">
 <button 

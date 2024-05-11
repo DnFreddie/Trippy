@@ -8,7 +8,7 @@ import (
 )
 
 type SampleModel struct {
-	Id   int
+				Id   int
 	Name string
 }
 

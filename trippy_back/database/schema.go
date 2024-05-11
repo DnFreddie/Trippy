@@ -11,12 +11,12 @@ type ChallengeField struct {
 	Description string `json:"description"`
 }
 
-func CreateSchema(db *pg.DB ,tables []interface{} ,temp bool) error {
+func CreateSchema(db *pg.DB, tables []interface{}, temp bool) error {
 
 	for _, model := range tables {
 		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
 			IfNotExists: true,
-			Temp:       temp,
+			Temp:        temp,
 		})
 		if err != nil {
 			return err

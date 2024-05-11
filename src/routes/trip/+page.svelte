@@ -1,20 +1,20 @@
 <script lang="ts">
+import uuid4 from "uuid4";
+
     import ChalengFiled from '$lib/components/chalengFiled.svelte';
     export let data;
 
-    import { storeFE,idIncrement } from '$lib/stores/store.js';
-$storeFE = [
-];
-idIncrement.set(0);	
-function addItem(){
-		var l = $storeFE.length;	// get our current items list count
-		$storeFE[l] = { id:$idIncrement, name: 'Another option', otherattrib: "additional note" };
-		$idIncrement++;	
+     let someObjects = [];
+
+  const addObject = (obj) => {
+    someObjects = [...someObjects, obj];
+  }
+
+const removeObject = (id:string) => {
+    someObjects = someObjects.filter((todo) => todo.id !== id)
+   someObjects = [...someObjects];
 }
-
-
-
-</script>
+ </script>
 
 {#if data.error }
     <p>there was an erroor</p>
@@ -32,10 +32,12 @@ function addItem(){
         {/if}
     {/each}
 
-<button on:click={addItem}>Add an item</button>
-	{#each $storeFE as item}
-                <ChalengFiled description={"im done "} currPossiton={[19.613789287429256,52.63097006320834]}  objAttributes={item}/>
-	{/each}
+        <button on:click={() => addObject({ id:uuid4() })}>Add an item</button>
+
+           {#each someObjects as obj (obj.id)}
+  <ChalengFiled description={"im done"} currPossiton={[19.613789287429256,52.63097006320834]} object={obj.id} removeComponent={removeObject} />
+{/each}
+
 
 
 </div>

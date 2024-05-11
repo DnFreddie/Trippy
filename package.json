@@ -36,6 +36,7 @@
 	"dependencies": {
 		"i": "^0.3.7",
 		"npm": "^10.6.0",
-		"svelte-maplibre": "^0.8.5"
+		"svelte-maplibre": "^0.8.5",
+		"uuid4": "^2.0.3"
 	}
 }

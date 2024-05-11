@@ -1,5 +1,5 @@
-import { getChalanges } from '$lib';
-import type { Chalange } from '$lib';
+//import { getChalanges } from '$lib';
+//import type { Chalange } from '$lib';
 export const actions = {
 	addRef: async ({ request }) => {
 		const formData = await request.formData();
@@ -10,7 +10,7 @@ export const actions = {
 	},
 
 
-	upPosition: async ({ request }) => {
+	upPosition: async ({ request }) => { 
 		const formData = await request.formData();
         console.log(formData)
 		const currPosition = formData.get('latitude')
