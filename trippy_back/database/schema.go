@@ -9,8 +9,8 @@ type ChallengeField struct {
 	Id          string `json:"id"`
 	Latitude    string `json:"latitude"`
 	Description string `json:"description"`
-	Img  byte `json:"img"`
-	Longitude string`json:"longitude"`
+	Img  []byte `json:"img"`
+	Cordinace string`json:"cordinace"`
 }
 
 func CreateSchema(db *pg.DB, tables []interface{}, temp bool) error {
@@ -18,7 +18,7 @@ func CreateSchema(db *pg.DB, tables []interface{}, temp bool) error {
 	for _, model := range tables {
 		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
 			IfNotExists: true,
-			Temp:        temp,
+			Temp:        false,
 		})
 		if err != nil {
 			return err

@@ -31,15 +31,15 @@ func main() {
 		return routes.GetChalanges(c, db)
 	})
 	e.POST("/add",func(c echo.Context) error {
-		p := &[]database.ChallengeField{}
-		err:= c.Bind(p);
+		var p []database.ChallengeField
+		err:= c.Bind(&p);
 
 		if err != nil {
-			//slog.Error("Thsi is err ",err)
+			slog.Error("Thsi is err ",err)
 			return c.String(http.StatusBadRequest,"bad Request")
 		}
 
-		return routes.AddChalange(c,db,*p)
+		return routes.AddChalange(c,db,p)
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))

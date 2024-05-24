@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log/slog"
+
 	"github.com/go-pg/pg/v10"
 )
 
@@ -15,7 +16,9 @@ func CreateDbConn() *pg.DB {
 }
 
 func InsertItem[T any](db *pg.DB ,data T) error {
+slog.Info("this is data ",data)
 	_, err := db.Model(&data).Insert()
+	fmt.Println(data)
 	if err != nil {
 		slog.Error("Error inserting the chalange", err)
 		return err
@@ -36,6 +39,7 @@ func Query[T any](db *pg.DB, data T, query string) ([]T, error) {
 	}
 
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 	return result, nil

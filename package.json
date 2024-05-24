@@ -36,6 +36,8 @@
 	"dependencies": {
 		"i": "^0.3.7",
 		"npm": "^10.6.0",
+		"protobufjs": "^7.3.0",
+		"protobufjs-cli": "^1.1.2",
 		"svelte-maplibre": "^0.8.5",
 		"uuid4": "^2.0.3"
 	}

@@ -1,16 +1,42 @@
 <script lang="ts">
-  import { MapLibre, Marker } from 'svelte-maplibre';
-  import { DefaultMarker } from 'svelte-maplibre';
+  import { MapLibre} from 'svelte-maplibre';
+  import { Marker } from 'svelte-maplibre';
   import { Popup } from 'svelte-maplibre';
   import type { LngLatLike } from 'svelte-maplibre';
   
   //let boundPos
       //[-122.2993, 47.4464]; // Initial position
 export let currPossiton:LngLatLike
+let message = "test"
 
-  function updateCurrPosition(event) {
-    currPossiton = event.detail.lngLat;
+const updateCurrPosition = (event) =>{
+currPossiton = event.detail.lngLat;
+message = currPossiton.toString()
+      }
+
+const getTheLocation = (event) => {
+    const cArray: string[] = currPossiton.toString().split(',');
+
+    if (cArray.length == 2) {
+        const lng = cArray[0];
+        const lat = cArray[1];
+ fetch(`/api/cords?lng=${lng}&lat=${lat}`)
+  .then(response => {
+
+    return response.json();
+  })
+  .then(data => {
+    
+  message = data
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
   }
+
+  }
+
+
 </script>
 
 <div>
@@ -24,24 +50,23 @@ export let currPossiton:LngLatLike
 
 
 >
-  <DefaultMarker
+  <Marker
     lngLat={currPossiton}
     draggable
         on:drag={updateCurrPosition}
+        on:dragend={getTheLocation}
   >
-    <span> Drag me ! </span>
+    <span class="grid h-16 w-16 place-items-center rounded-full border border-gray-200 bg-red-300 text-black shadow-2xl focus:outline-2 focus:outline-blac"> {message} </span>
 <Popup offset={[0, -10]}>
-        <div class="text-lg font-bold">"shflkjajfklafjk"</div>
+        <div class="text-lg font-bold">{message}</div>
       </Popup>
 
 
-  </DefaultMarker>
+  </Marker>
 
  </MapLibre>
 
 
-<form method="POST"  action="?/upPosition" class="hidden">
   <input type="hidden" name="latitude" bind:value={currPossiton} />
-</form>
 
 </div>
