@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MapLibre, Marker } from 'svelte-maplibre';
+  import { MapLibre} from 'svelte-maplibre';
   import { DefaultMarker } from 'svelte-maplibre';
   import { Popup } from 'svelte-maplibre';
   import type { LngLatLike } from 'svelte-maplibre';
@@ -40,8 +40,6 @@ export let currPossiton:LngLatLike
  </MapLibre>
 
 
-<form method="POST"  action="?/upPosition" class="hidden">
   <input type="hidden" name="latitude" bind:value={currPossiton} />
-</form>
 
 </div>

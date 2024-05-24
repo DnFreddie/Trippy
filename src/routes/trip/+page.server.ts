@@ -4,8 +4,7 @@ interface Chalange {
     id: string;
     description: string;
     img: File;
-    latitude?: string;
-    longitude?: string; 
+    cordinace?: string;
 }
 
 import { json } from '@sveltejs/kit';
@@ -16,6 +15,8 @@ export const actions = {
 const formData = await request.formData();
 const imageArray = formData.getAll('test') as File[];
 const description = formData.getAll('user_desc') as string[];
+const cords = formData.getAll('latitude') as string[];
+
 
 if (imageArray.length !== description.length) {
     return; 
@@ -29,8 +30,7 @@ imageArray.forEach((img: File, index: number) => {
         id, 
         description: description[index],
         img,
-        latitude: "",
-        longitude:"" 
+        cordinace:cords[index]
     };
     chalangeArray.push(newChalange);
 });
