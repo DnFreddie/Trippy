@@ -37,7 +37,7 @@
         );
     }
 </script>
-<form method="post" id="s-filed" enctype="multipart/form-data" class="space-y-6 t p-8 rounded-lg shadow-md justify-center w-full">
+<form method="post" id="s-filed" enctype="multipart/form-data" class="space-y-6 t p-8 rounded-lg shadow-md justify-center w-full ">
     <div class="grid grid-cols-1 grid-rows-1 md:grid-rows-2 xl:grid-cols-3 gap-4">
         {#each chalange_list as item (item.id)}
             <div class="p-6 bg-[#1F232B] rounded-lg shadow-md relative">

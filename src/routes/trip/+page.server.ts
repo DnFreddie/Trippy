@@ -1,19 +1,52 @@
-//import { getChalanges } from '$lib';
-//import type { Chalange } from '$lib';
+import uuid4 from "uuid4";
+
+interface Chalange {
+    id: string;
+    description: string;
+    img: File;
+    latitude?: string;
+    longitude?: string; 
+}
+
 import { json } from '@sveltejs/kit';
 
 export const actions = {
     addRef: async ({ request }: { request: Request }) => {
-        const formData = await request.formData();
-        console.log('Form Data:', formData);
-        
-        const albumImage = formData.getAll('test') as File[];
-        console.log('Album Image:', albumImage);
-        
-        const userDescription = formData.getAll('user_desc') as string[];
-        console.log('User Description:', userDescription);
 
-        // Handle the data as needed, for example, save to a database or cloud storage
+const formData = await request.formData();
+const imageArray = formData.getAll('test') as File[];
+const description = formData.getAll('user_desc') as string[];
+
+if (imageArray.length !== description.length) {
+    return; 
+}
+
+let chalangeArray: Chalange[] = [];
+
+imageArray.forEach((img: File, index: number) => {
+    let  id = uuid4();
+    let newChalange: Chalange = {
+        id, 
+        description: description[index],
+        img,
+        latitude: "",
+        longitude:"" 
+    };
+    chalangeArray.push(newChalange);
+});
+    const body =  JSON.stringify(chalangeArray)
+  const response = await fetch("http://127.0.0.1:1323/add", {
+    method: "POST",
+    body:body, 
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8"
+    }
+  });
+console.log(response.text)
+  const responseData = await response.text()
+    console.log(responseData)
+
+
 
     },
 
@@ -25,7 +58,6 @@ export const actions = {
         const longitude = formData.get('longitude');
         console.log('Current Position:', { latitude, longitude });
 
-        // Handle the data as needed
 
         return json({ success: true });
 	}
@@ -41,6 +73,7 @@ export async function load() {
             id:string,
             latitude:string,
             challenge:string
+
         })
     }
 
