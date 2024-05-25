@@ -15,8 +15,8 @@ func CreateDbConn() *pg.DB {
 	return db
 }
 
-func InsertItem[T any](db *pg.DB ,data T) error {
-slog.Info("this is data ",data)
+func InsertItem[T any](db *pg.DB, data T) error {
+	slog.Info("this is data ", data)
 	_, err := db.Model(&data).Insert()
 	fmt.Println(data)
 	if err != nil {
@@ -35,7 +35,7 @@ func Query[T any](db *pg.DB, data T, query string) ([]T, error) {
 	if query == "" {
 		err = db.Model(&result).Select()
 	} else {
-		_, err = db.Query(&result, query) 
+		_, err = db.Query(&result, query)
 	}
 
 	if err != nil {
@@ -44,4 +44,3 @@ func Query[T any](db *pg.DB, data T, query string) ([]T, error) {
 	}
 	return result, nil
 }
-

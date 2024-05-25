@@ -9,7 +9,6 @@ import (
 )
 
 func GenerateQuestions(path string) {
-	// Read file contents
 	f, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)

@@ -10,24 +10,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func AddChalange(c echo.Context, db *pg.DB, data []database.ChallengeField) error {
 
-func AddChalange(c echo.Context, db *pg.DB,data []database.ChallengeField) error {
+	for _, ch := range data {
 
-	for _ ,ch := range data{
+		slog.Info("info xdddd")
 
-	slog.Info("info xdddd")
+		err := database.InsertItem(db, ch)
 
-
-	err := database.InsertItem(db,ch)
-
-	fmt.Println(ch )
-	if err != nil {
+		fmt.Println(ch)
+		if err != nil {
 			fmt.Println(err)
-		return c.JSON(http.StatusInternalServerError,"error adding the item")
-	}
+			return c.JSON(http.StatusInternalServerError, "error adding the item")
+		}
 
 	}
-	return c.JSON(http.StatusOK, "success" )
+	return c.JSON(http.StatusOK, "success")
 }
-
-

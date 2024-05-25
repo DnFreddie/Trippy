@@ -9,8 +9,8 @@ type ChallengeField struct {
 	Id          string `json:"id"`
 	Latitude    string `json:"latitude"`
 	Description string `json:"description"`
-	Img  []byte `json:"img"`
-	Cordinace string`json:"cordinace"`
+	Img         []byte `json:"img"`
+	Cordinace   string `json:"cordinace"`
 }
 
 func CreateSchema(db *pg.DB, tables []interface{}, temp bool) error {

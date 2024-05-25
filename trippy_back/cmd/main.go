@@ -16,8 +16,8 @@ func main() {
 	slog.SetDefault(logger)
 	db := database.CreateDbConn()
 	if err := database.CreateSchema(db, []interface{}{&database.ChallengeField{}}, false); err != nil {
-    slog.Error("Error creating schema:", err)
-	}else {
+		slog.Error("Error creating schema:", err)
+	} else {
 	}
 	// err := database.AddChalange(db)
 	// if err != nil{
@@ -30,16 +30,16 @@ func main() {
 	e.GET("/challenge", func(c echo.Context) error {
 		return routes.GetChalanges(c, db)
 	})
-	e.POST("/add",func(c echo.Context) error {
+	e.POST("/add", func(c echo.Context) error {
 		var p []database.ChallengeField
-		err:= c.Bind(&p);
+		err := c.Bind(&p)
 
 		if err != nil {
-			slog.Error("Thsi is err ",err)
-			return c.String(http.StatusBadRequest,"bad Request")
+			slog.Error("Thsi is err ", err)
+			return c.String(http.StatusBadRequest, "bad Request")
 		}
 
-		return routes.AddChalange(c,db,p)
+		return routes.AddChalange(c, db, p)
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))

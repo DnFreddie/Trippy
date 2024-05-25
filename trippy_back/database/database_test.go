@@ -1,14 +1,13 @@
 package database
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"errors"
-
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 type SampleModel struct {
-				Id   int
+	Id   int
 	Name string
 }
 
@@ -82,93 +81,91 @@ func TestCreateSchema(t *testing.T) {
 	}
 }
 func TestInsertItem(t *testing.T) {
-    testCases := []struct {
-        name  string
-        item  SampleModel
-        err   error
-    }{
-        {
-            name: "Inserting into table",
-            item: SampleModel{
-                Id:   123,
-                Name: "Jackob",
-            },
-            err: nil, 
-        },
-        {
-            name: "Duplicate record",
-            item: SampleModel{
-                Id:   123,
-                Name: "Jackob",
-            },
-            err: errors.New("dummy error"),
-        },
-    }
+	testCases := []struct {
+		name string
+		item SampleModel
+		err  error
+	}{
+		{
+			name: "Inserting into table",
+			item: SampleModel{
+				Id:   123,
+				Name: "Jackob",
+			},
+			err: nil,
+		},
+		{
+			name: "Duplicate record",
+			item: SampleModel{
+				Id:   123,
+				Name: "Jackob",
+			},
+			err: errors.New("dummy error"),
+		},
+	}
 
-    db := CreateDbConn()
-    for _, tc := range testCases {
-        t.Run(tc.name, func(t *testing.T) {
-            err := InsertItem(db, tc.item)
-            if tc.err != nil {
-                assert.NotNil(t, err) 
-            } else {
-                assert.Nil(t, err) 
-            }
-        })
-    }
+	db := CreateDbConn()
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			err := InsertItem(db, tc.item)
+			if tc.err != nil {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
+
 type TestWrong struct {
-    XXX  string
-    XYZF float64
+	XXX  string
+	XYZF float64
 }
-
 
 func TestQuery(t *testing.T) {
-    testCases := []struct {
-        name   string
-        item   interface{}
-        result []SampleModel
-        err    error
-    }{
-        {
-            name:   "Checking the correct value",
-            item:   SampleModel{},
-			result: []SampleModel{{Id: 123, Name: "Jackob"}}, 
-            err:    nil,
-        },
-        {
-            name: "Checking wrong table",
-            item: TestWrong{},
-            err:  errors.New("dummy error"),
-        },
-    }
+	testCases := []struct {
+		name   string
+		item   interface{}
+		result []SampleModel
+		err    error
+	}{
+		{
+			name:   "Checking the correct value",
+			item:   SampleModel{},
+			result: []SampleModel{{Id: 123, Name: "Jackob"}},
+			err:    nil,
+		},
+		{
+			name: "Checking wrong table",
+			item: TestWrong{},
+			err:  errors.New("dummy error"),
+		},
+	}
 
-    db := CreateDbConn()
+	db := CreateDbConn()
 
-    for _, tc := range testCases {
-        t.Run(tc.name, func(t *testing.T) {
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
 
-            var result interface{}
-            var err error
+			var result interface{}
+			var err error
 
-            switch item := tc.item.(type) {
-            case SampleModel:
-                result, err = Query(db, item, "")
-            case TestWrong:
-                result, err = nil, errors.New("dummy error")
-            default:
-                t.Errorf("unexpected type: %T", item)
-                return
-            }
+			switch item := tc.item.(type) {
+			case SampleModel:
+				result, err = Query(db, item, "")
+			case TestWrong:
+				result, err = nil, errors.New("dummy error")
+			default:
+				t.Errorf("unexpected type: %T", item)
+				return
+			}
 
-            if tc.err != nil {
-                assert.Equal(t, tc.err, err)
-            } else {
-                assert.Nil(t, err)
-                assert.Equal(t, tc.result, result)
-            }
-        })
-    }
+			if tc.err != nil {
+				assert.Equal(t, tc.err, err)
+			} else {
+				assert.Nil(t, err)
+				assert.Equal(t, tc.result, result)
+			}
+		})
+	}
 }
-
-
