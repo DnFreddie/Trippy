@@ -2,7 +2,6 @@ package routes
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
 	"trippy_back/database"
 
@@ -11,13 +10,13 @@ import (
 )
 
 func AddChalange(c echo.Context, db *pg.DB, data []database.ChallengeField) error {
+if (len(data)==0){
 
+return c.JSON(http.StatusInternalServerError, "There has to be at lest one item")
+
+	}
 	for _, ch := range data {
-
-		slog.Info("info xdddd")
-
 		err := database.InsertItem(db, ch)
-
 		fmt.Println(ch)
 		if err != nil {
 			fmt.Println(err)

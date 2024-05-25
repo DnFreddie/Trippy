@@ -9,7 +9,7 @@ type ChallengeField struct {
 	Id          string `json:"id"`
 	Latitude    string `json:"latitude"`
 	Description string `json:"description"`
-	Img         []byte `json:"img"`
+	Img         string `json:"img"`
 	Cordinace   string `json:"cordinace"`
 }
 

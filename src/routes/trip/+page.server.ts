@@ -1,44 +1,52 @@
 import uuid4 from 'uuid4';
-import { createReadableStream } from '@sveltejs/kit/node';
 
 interface ChalngeField {
 	id: string;
 	description: string;
-	img: Uint8Array;
+	img: string;
 	cordinace?: string;
 }
 
 import { json } from '@sveltejs/kit';
 export const actions = {
-	addRef: async ({ request }: { request: Request }) => {
+		addRef: async ({ request }: { request: Request }) => {
 		const formData = await request.formData();
 		const imageArray = formData.getAll('test') as File[];
 		const description = formData.getAll('user_desc') as string[];
 		const cords = formData.getAll('latitude') as string[];
 
-		if (imageArray.length !== description.length) {
+		let chalangeArray: ChalngeField[] = [];
+		if (imageArray.length !== description.length || imageArray.length !== cords.length) {
 			return;
 		}
 
-		let chalangeArray: ChalngeField[] = [];
 
-		imageArray.forEach(async (img: File, index: number) => {
+		for (let index = 0; index < imageArray.length; index++) {
+			const img = imageArray[index];
 			const id = uuid4();
 			const desc = description[index];
 			const c = cords[index];
 
 			const buffer = await img.arrayBuffer();
 			const uint8Array = new Uint8Array(buffer);
+            const base64String = btoa(String.fromCharCode(...uint8Array));
+
 
 			const newChallenge: ChalngeField = {
 				id: id,
 				description: desc,
-				img: uint8Array,
+				img: base64String,
 				cordinace: c
 			};
 
 			chalangeArray.push(newChallenge);
-		});
+		}
+
+        if (chalangeArray.length == 0){
+        return console.log("This lentg is 0 for some reson :",chalangeArray.length)
+        }
+        console.log(chalangeArray.length)
+
 		const body = JSON.stringify(chalangeArray);
 		const response = await fetch('http://127.0.0.1:1323/add', {
 			method: 'POST',
