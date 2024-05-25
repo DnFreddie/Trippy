@@ -38,7 +38,7 @@ imageArray.forEach(async (img: File, index: number) => {
         description:desc,
         img: uint8Array,
         cordinace:c
-    };
+   };
 
     chalangeArray.push(newChallenge);
 });
