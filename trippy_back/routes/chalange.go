@@ -10,7 +10,7 @@ import (
 func GetChalanges(c echo.Context, db *pg.DB) error {
 	ch, err := database.Query(db, database.ChallengeField{}, "")
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, "lol")
+		return c.JSON(http.StatusBadRequest, "Can't get the Chalanges")
 	}
 
 	return c.JSON(http.StatusOK, ch)

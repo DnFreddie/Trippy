@@ -44,3 +44,13 @@ func Query[T any](db *pg.DB, data T, query string) ([]T, error) {
 	}
 	return result, nil
 }
+func DelteItem [T any](db *pg.DB, data T, id string) error {
+    _, err := db.Model(&data).Where("id = ?", id).Delete()
+	slog.Info(fmt.Sprintf("The item was %v from %v",id,data))
+    if err != nil {
+		slog.Error(fmt.Sprintf("this is the error ",err))
+        return err
+    }
+    return nil
+}
+

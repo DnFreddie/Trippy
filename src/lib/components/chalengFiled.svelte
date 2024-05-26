@@ -3,26 +3,38 @@
 	import type { LngLatLike } from 'svelte-maplibre';
 	import uuid4 from 'uuid4';
 
-	interface ChallengeItem {
-		id: string;
-		uploadedImage: string;
-		description: string;
-		showMap: boolean;
-	}
 
-	let chalange_list: ChallengeItem[] = [];
+    interface ChallengeItem{ 
+	id: string;
+	description: string;
+	img?:string ;
+	cordinace?: string;
+    showMap?:boolean
+}
 
+	export let chalange_list: ChallengeItem[] = [];
+    
 	export let currPossiton: LngLatLike;
 
 	const addObject = () => {
 		chalange_list = [
 			...chalange_list,
-			{ id: uuid4(), uploadedImage: '', description: '', showMap: false }
+			{ id: uuid4(), img: '', description: '', showMap: false }
 		];
 	};
 
 	const removeObject = (id: string) => {
 		chalange_list = chalange_list.filter((ch_field) => ch_field.id !== id);
+    fetch(`/api/delete?id=${id}`,{
+            method:'POST'
+        })
+    .then(response => {
+        // Handle response here
+    })
+    .catch(error => {
+        // Handle error here
+    });
+
 	};
 
 	function toggleMap(id: string) {
@@ -36,17 +48,17 @@
 		if (!image) return;
 		const objectUrl = URL.createObjectURL(image);
 		chalange_list = chalange_list.map((item) =>
-			item.id === id ? { ...item, uploadedImage: objectUrl } : item
+			item.id === id ? { ...item, img: objectUrl } : item
 		);
 	}
 </script>
-
 <form
 	method="post"
 	id="s-filed"
 	enctype="multipart/form-data"
 	class="space-y-6 t p-8 rounded-lg shadow-md justify-center w-full"
 >
+
 	<div class="grid grid-cols-1 grid-rows-1 md:grid-rows-2 xl:grid-cols-3 gap-4">
 		{#each chalange_list as item (item.id)}
 			<div class="p-6 bg-[#1F232B] rounded-lg shadow-md relative">
@@ -80,9 +92,9 @@
 						/>
 
 						<div>
-							{#if item.uploadedImage}
+							{#if item.img}
 								<div class="mt-4">
-									<img src={item.uploadedImage} class="max-w-50ch" alt="Tropical Moment" />
+									<img src={item.img} class="max-w-50ch" alt="Tropical Moment" />
 								</div>
 							{/if}
 

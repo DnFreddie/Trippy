@@ -1,13 +1,6 @@
 import uuid4 from 'uuid4';
+import type  { ChalngeField } from '$lib';
 
-interface ChalngeField {
-	id: string;
-	description: string;
-	img: string;
-	cordinace?: string;
-}
-
-import { json } from '@sveltejs/kit';
 export const actions = {
 		addRef: async ({ request }: { request: Request }) => {
 		const formData = await request.formData();
@@ -22,26 +15,19 @@ export const actions = {
 
 
 		for (let index = 0; index < imageArray.length; index++) {
-			const img = imageArray[index];
+			//const img = imageArray[index];
 			const id = uuid4();
 			const desc = description[index];
 			const c = cords[index];
-
-			const buffer = await img.arrayBuffer();
-			const uint8Array = new Uint8Array(buffer);
-            const base64String = btoa(String.fromCharCode(...uint8Array));
-
-
 			const newChallenge: ChalngeField = {
 				id: id,
 				description: desc,
-				img: base64String,
+				//img: new Blob([img]),
 				cordinace: c
 			};
 
 			chalangeArray.push(newChallenge);
 		}
-
         if (chalangeArray.length == 0){
         return console.log("This lentg is 0 for some reson :",chalangeArray.length)
         }
@@ -59,32 +45,26 @@ export const actions = {
 		console.log(responseData);
 	},
 
-	upPosition: async ({ request }: { request: Request }) => {
-		const formData = await request.formData();
-		console.log('Form Data:', formData);
-		const latitude = formData.get('latitude');
-		const longitude = formData.get('longitude');
-		console.log('Current Position:', { latitude, longitude });
-
-		return json({ success: true });
-	}
 };
 
 export async function load() {
-	let ch;
+    let ch = []; 
 
-	const r = await fetch('http://127.0.0.1:1323/challenge');
-	if (r.ok) {
-		ch = (await r.json()) as {
-			id: string;
-			latitude: string;
-			challenge: string;
-		};
-	}
+    try {
+        const r = await fetch('http://127.0.0.1:1323/challenge');
+        if (r.ok) {
+            ch = await r.json();
+            ch.forEach(item => {
+                console.log(item.id);
+            });
+        }
+    } catch (error) {
 
-	//TODO!  make it so it returens smth ecen if undefined
 
-	return {
-		chalange_list: ch
-	};
+    }
+
+    return {
+        chalange_list: ch || []
+    };
 }
+

@@ -7,7 +7,6 @@ import (
 	"os"
 	"trippy_back/database"
 	"trippy_back/routes"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -40,6 +39,17 @@ func main() {
 		}
 
 		return routes.AddChalange(c, db, p)
+	})
+	e.POST("/del", func(c echo.Context) error {
+		var item string
+		
+		err :=c.Bind(&item)
+			if err != nil {
+			slog.Error("Wrong paramater to delte", err)
+			return c.String(http.StatusBadRequest, "bad delete")
+		}
+
+	return routes.DelChalange(c,db,item)
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))
